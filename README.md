@@ -1,0 +1,2 @@
+# MaloBarba
+MaloBarba Django application
