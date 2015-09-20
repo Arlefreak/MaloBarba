@@ -10,3 +10,4 @@ class AdressAdmin(admin.ModelAdmin):
 admin.site.register(Product, ProductAdmin)
 admin.site.register(Adress, AdressAdmin)
 admin.site.register(Client)
+admin.site.register(Order)

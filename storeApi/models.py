@@ -132,3 +132,7 @@ class Adress(models.Model):
         if self.default:
             Adress.objects.filter(default=True,type=self.type,user=self.user).update(default=False)
         super(Adress, self).save(*args, **kwargs)
+
+class Transaction(models.Model):
+    order       = models.ForeignKey('Order')
+    card        = models.CharField(_('Token'), max_length=50)
