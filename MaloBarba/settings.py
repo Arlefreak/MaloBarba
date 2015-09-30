@@ -41,6 +41,7 @@ INSTALLED_APPS = (
         'solo',
         'rest_framework',
         'taggit',
+        'taggit_serializer',
         'storeApi',
         )
 

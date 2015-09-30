@@ -1,11 +1,12 @@
 from django.db                  import models
+from uuslug                     import uuslug
 from taggit.managers            import TaggableManager
 from django.contrib.auth.models import User
 from django_countries.fields    import CountryField
 from django.utils.translation   import ugettext_lazy as _
 
 class Product (models.Model):
-    sku           = models.SlugField('SKU', unique=True, max_length=50)
+    sku           = models.SlugField('SKU', unique=True, max_length=50, editable=False)
     name          = models.CharField('Name',default='', max_length=140)
     description   = models.TextField('Description', default='')
     image         = models.ImageField('Main image')
@@ -26,6 +27,9 @@ class Product (models.Model):
         return u'%s' % (self.sku)
     def __str__(self):
         return u'%s' % (self.sku)
+    def save(self, *args, **kwargs):
+        self.sku = uuslug(self.name, instance=self, slug_field='sku')
+        super(Product, self).save(**kwargs)
 
 class ProductImages:
     product      = models.ForeignKey('Product')
