@@ -1,10 +1,11 @@
-from django.conf.urls import url
-from rest_framework.urlpatterns import format_suffix_patterns
-from . import views
+from .                      import views
+from django.conf.urls       import url, include
+from rest_framework.routers import DefaultRouter
+
+router = DefaultRouter()
+router.register(r'products', views.ProductViewSet)
 
 urlpatterns = [
-    url(r'^products/$', views.ProductList.as_view()),
-    url(r'^products/(?P<pk>[0-9]+)$', views.ProductDetail.as_view())
+    url(r'^', include(router.urls)),
+    url(r'^api-auth/', include('rest_framework.urls', namespace='rest_framework'))
 ]
-
-urlpatterns = format_suffix_patterns(urlpatterns)

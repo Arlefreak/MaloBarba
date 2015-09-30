@@ -1,15 +1,9 @@
-from storeApi.models import Product
-from storeApi.serializers import ProductSerializer
-from rest_framework import generics
-from rest_framework import permissions
+from storeApi.models           import Product
+from storeApi.serializers      import ProductSerializer
+from rest_framework            import permissions
+from rest_framework            import viewsets
 
-class ProductList(generics.ListCreateAPIView):
-        permission_classes = (permissions.IsAuthenticatedOrReadOnly,)
-        queryset = Product.objects.all()
-        serializer_class = ProductSerializer
-
-
-class ProductDetail(generics.RetrieveUpdateDestroyAPIView):
-        permission_classes = (permissions.IsAuthenticatedOrReadOnly,)
-        queryset = Product.objects.all()
-        serializer_class = ProductSerializer 
+class ProductViewSet(viewsets.ModelViewSet):
+    queryset = Product.objects.all()
+    serializer_class = ProductSerializer
+    permission_classes = (permissions.IsAuthenticatedOrReadOnly,)
