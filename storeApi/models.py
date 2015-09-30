@@ -31,7 +31,7 @@ class Product (models.Model):
         self.sku = uuslug(self.name, instance=self, slug_field='sku')
         super(Product, self).save(**kwargs)
 
-class ProductImages:
+class ProductImages(models.Model):
     product      = models.ForeignKey('Product')
     name         = models.CharField('Name',default='', max_length=140)
     image        = models.ImageField('Image')

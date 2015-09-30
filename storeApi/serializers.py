@@ -8,3 +8,7 @@ class ProductSerializer(TaggitSerializer,serializers.ModelSerializer):
             model = Product
             fields = ('pk','sku','name','image','description','price','discount','inventory','status','tags','date','updated','order',)
 
+class ProductImageSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = ProductImages
+        fields = ('product', 'name', 'image', 'order', 'date', 'updated')
