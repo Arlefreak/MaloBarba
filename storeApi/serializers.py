@@ -3,7 +3,7 @@ from taggit_serializer.serializers import (TagListSerializerField, TaggitSeriali
 from storeApi.models import *
 
 class ProductSerializer(TaggitSerializer,serializers.ModelSerializer):
-        tags = TagListSerializerField()
+        tags = TagListSerializerField(required=False)
         class Meta:
             model = Product
             fields = ('pk','sku','name','image','description','price','discount','inventory','status','tags','date','updated','order',)
