@@ -5,6 +5,10 @@ from rest_framework.routers import DefaultRouter
 router = DefaultRouter()
 router.register(r'products', views.ProductViewSet)
 router.register(r'productsImages', views.ProductImagesViewset)
+router.register(r'client', views.ClientViewset)
+router.register(r'shoppingCartProduct', views.ShoppingCartProductViewset)
+router.register(r'order', views.OrderViewSet)
+router.register(r'adress', views.AdressViewSet)
 
 urlpatterns = [
     url(r'^', include(router.urls)),

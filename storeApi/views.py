@@ -12,3 +12,23 @@ class ProductImagesViewset(viewsets.ModelViewSet):
         queryset           = ProductImages.objects.all()
         serializer_class   = ProductImageSerializer
         permission_classes = (permissions.IsAuthenticatedOrReadOnly,)
+
+class ClientViewset(viewsets.ModelViewSet):
+        queryset           = Client.objects.all()
+        serializer_class   = ClientSerializer
+        permission_classes = (permissions.IsAuthenticatedOrReadOnly,)
+
+class ShoppingCartProductViewset(viewsets.ModelViewSet):
+        queryset           = ShoppingCartProduct.objects.all()
+        serializer_class   = ShoppingCartProductSerializer
+        permission_classes = (permissions.IsAuthenticatedOrReadOnly,)
+
+class OrderViewSet(viewsets.ModelViewSet):
+        queryset           = Order.objects.all()
+        serializer_class   = OrderSerializer
+        permission_classes = (permissions.IsAuthenticatedOrReadOnly,)
+
+class AdressViewSet(viewsets.ModelViewSet):
+        queryset           = Adress.objects.all()
+        serializer_class   = AdressSerializer
+        permission_classes = (permissions.IsAuthenticatedOrReadOnly,)
