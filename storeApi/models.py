@@ -1,5 +1,6 @@
 from django.db                  import models
 from uuslug                     import uuslug
+from datetime                   import date
 from taggit.managers            import TaggableManager
 from django.contrib.auth.models import User
 from django_countries.fields    import CountryField
@@ -14,6 +15,7 @@ class Product (models.Model):
     discount      = models.FloatField('Discount', default=0.0)
     inventory     = models.IntegerField('Inventory', default=0)
     tags          = TaggableManager(blank=True)
+    category      = models.ForeignKey('Category')
     statusChoices = (('IN','In stock'),('OUT','Out of stock'))
     status        = models.CharField('Status', choices=statusChoices, max_length=3, default='OUT')
     date          = models.DateField('Date added', auto_now_add=True)
@@ -47,6 +49,21 @@ class ProductImages(models.Model):
     def __str__(self):
         return u'%s' % (self.image.url)
 
+class Category(models.Model):
+    order        = models.IntegerField('Order', default=0)
+    name         = models.CharField('Name',default='', max_length=140)
+    image        = models.ImageField('Image', blank=True, null=True)
+    date         = models.DateField('Date added', auto_now_add=True)
+    updated      = models.DateField('Date updated', auto_now=True)
+    class Meta:
+        ordering = ['order', 'date']
+        verbose_name = 'category'
+        verbose_name_plural = 'categories'
+    def __unicode__(self):
+        return u'%s' % (self.name)
+    def __str__(self):
+        return u'%s' % (self.name)
+
 class Client(models.Model):
     user = models.OneToOneField(User,on_delete=models.CASCADE)
     class Meta:
@@ -59,7 +76,7 @@ class Client(models.Model):
         return u'%s' % (self.user.username)
 
 class ShoppingCartProduct(models.Model):
-    user     = models.ForeignKey('Client')
+    client   = models.ForeignKey('Client')
     product  = models.ForeignKey('Product')
     cuantity = models.IntegerField()
     class Meta:
@@ -72,20 +89,20 @@ class ShoppingCartProduct(models.Model):
         return u'%s' % (self.product.name)
 
 class Order(models.Model):
-    sku               = models.SlugField('SKU', unique=True, max_length=50)
-    user              = models.ForeignKey('Client')
+    sku               = models.SlugField('SKU', unique=True, max_length=50, editable=False)
+    client            = models.ForeignKey('Client')
     shippingAdress    = models.ForeignKey('Adress',limit_choices_to={'type': 'SHI'}, related_name='shippingAdress')
     billingAdress     = models.ForeignKey('Adress',limit_choices_to={'type': 'BIL'}, related_name='billingAdress')
-    items_subTotal    = models.FloatField(_('Items subtotal'))
-    shipping_cost     = models.FloatField(_('Shipping cost'))
-    taxes_cost        = models.FloatField(_('Taxes costs'))
-    total             = models.FloatField(_('Total'))
+    items_subTotal    = models.FloatField(_('Items subtotal'), default=0)
+    shipping_cost     = models.FloatField(_('Shipping cost'), default=0)
+    taxes_cost        = models.FloatField(_('Taxes costs'), default =0)
+    total             = models.FloatField(_('Total'), default=0)
     shipping_carrier  = models.CharField(_('Shipping carrier'), max_length=50)
     shipping_tracking = models.CharField(_('Shipping tracking numer'), max_length=50)
     date              = models.DateField('Date placed', auto_now_add=True)
     updated           = models.DateField('Date updated', auto_now=True)
     statusChoices     = (('PRO','processing'),('SHI','shipped'),('COM','complete'))
-    status            = models.CharField(_('status'), choices=statusChoices, max_length=3, default='PRO')
+    status            = models.CharField(_('status'), choices=statusChoices, max_length=3, default='PRO', editable=False)
     class Meta:
         ordering  = ['date', 'sku']
         verbose_name = 'order'
@@ -94,6 +111,10 @@ class Order(models.Model):
         return u'%s' % (self.sku)
     def __str__(self):
         return u'%s' % (self.sku)
+    def save(self, *args, **kwargs):
+        tmp = "%s%i%i%i" % (self.client.user.username[:3], date.today().day, date.today().month, date.today().year)
+        self.sku = uuslug(tmp, instance=self, slug_field='sku')
+        super(Order, self).save(**kwargs)
 
 class OrderProduct(models.Model):
     order    = models.ForeignKey('Order')
@@ -109,7 +130,7 @@ class OrderProduct(models.Model):
         return u'%s' % (self.product.name)
 
 class Adress(models.Model):
-    user           = models.ForeignKey('Client')
+    client         = models.ForeignKey('Client')
     name           = models.CharField('Name',default='', max_length=140)
     typeChoices    = (('BIL','Billing'),('SHI', 'Shipping'))
     type           = models.CharField('Type', choices=typeChoices, max_length=3, default='BIL')
@@ -134,7 +155,7 @@ class Adress(models.Model):
         return u'%s' % (self.name)
     def save(self, *args, **kwargs):
         if self.default:
-            Adress.objects.filter(default=True,type=self.type,user=self.user).update(default=False)
+            Adress.objects.filter(default=True,type=self.type,client=self.client).update(default=False)
         super(Adress, self).save(*args, **kwargs)
 
 class Transaction(models.Model):

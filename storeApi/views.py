@@ -13,6 +13,11 @@ class ProductImagesViewset(viewsets.ModelViewSet):
         serializer_class   = ProductImageSerializer
         permission_classes = (permissions.IsAuthenticatedOrReadOnly,)
 
+class CategoryViewset(viewsets.ModelViewSet):
+        queryset           = Category.objects.all()
+        serializer_class   = CategorySerializer 
+        permission_classes = (permissions.IsAuthenticatedOrReadOnly,)
+
 class ClientViewset(viewsets.ModelViewSet):
         queryset           = Client.objects.all()
         serializer_class   = ClientSerializer

@@ -5,9 +5,10 @@ class ProductAdmin(admin.ModelAdmin):
         list_display = ('order', 'sku', 'name', 'inventory', 'price', 'status', 'date',)
 
 class AdressAdmin(admin.ModelAdmin):
-        list_display = ('user', 'name', 'type', 'default', 'country', 'zipcode')
+        list_display = ('client', 'name', 'type', 'default', 'country', 'zipcode')
 
 admin.site.register(Product, ProductAdmin)
 admin.site.register(Adress, AdressAdmin)
 admin.site.register(Client)
 admin.site.register(Order)
+admin.site.register(Category)

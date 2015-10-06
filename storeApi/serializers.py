@@ -6,7 +6,12 @@ class ProductSerializer(TaggitSerializer,serializers.ModelSerializer):
     tags = TagListSerializerField(required=False)
     class Meta:
         model = Product
-        fields = ('pk','sku','name','image','description','price','discount','inventory','status','tags','date','updated','order',)
+        fields = ('pk','sku','name','image','description','price','discount','inventory','status','tags','category','date','updated','order',)
+
+class CategorySerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Category
+        fields = ('pk','name','image','date','updated','order',)
 
 class ProductImageSerializer(serializers.ModelSerializer):
     class Meta:
@@ -21,14 +26,14 @@ class ClientSerializer(serializers.ModelSerializer):
 class ShoppingCartProductSerializer(serializers.ModelSerializer):
     class Meta:
         model = ShoppingCartProduct
-        fields = ('user', 'product', 'cuantity')
+        fields = ('client', 'product', 'cuantity')
 
 class OrderSerializer(serializers.ModelSerializer):
     class Meta:
         model = Order
-        fields = ('sku','user', 'shippingAdress', 'billingAdress', 'items_subTotal', 'shipping_cost', 'total', 'shipping_carrier', 'shipping_tracking', 'date', 'updated', 'status',)
+        fields = ('sku','client', 'shippingAdress', 'billingAdress', 'items_subTotal', 'shipping_cost', 'total', 'shipping_carrier', 'shipping_tracking', 'date', 'updated', 'status',)
 
 class AdressSerializer(serializers.ModelSerializer):
     class Meta:
         model = Adress
-        fields = ('user', 'name', 'type', 'default', 'firstname', 'lastname', 'adress_line1', 'adress_line2', 'city', 'state_province', 'country', 'zipcode', 'phone_number', 'date',)
+        fields = ('client', 'name', 'type', 'default', 'firstname', 'lastname', 'adress_line1', 'adress_line2', 'city', 'state_province', 'country', 'zipcode', 'phone_number', 'date',)
