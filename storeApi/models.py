@@ -150,9 +150,9 @@ class Adress(models.Model):
         verbose_name = 'adress'
         verbose_name_plural = 'adresses'
     def __unicode__(self):
-        return u'%s - %s' % (self.user,self.name)
+        return u'%s - %s' % (self.client,self.name)
     def __str__(self):
-        return u'%s - %s' % (self.user,self.name)
+        return u'%s - %s' % (self.client,self.name)
     def save(self, *args, **kwargs):
         if self.default:
             Adress.objects.filter(default=True,type=self.type,client=self.client).update(default=False)
