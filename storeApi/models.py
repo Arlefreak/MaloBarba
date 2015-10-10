@@ -152,7 +152,7 @@ class Adress(models.Model):
     def __unicode__(self):
         return u'%s - %s' % (self.user,self.name)
     def __str__(self):
-        return u'%s - %s' % (iself.user,self.name)
+        return u'%s - %s' % (self.user,self.name)
     def save(self, *args, **kwargs):
         if self.default:
             Adress.objects.filter(default=True,type=self.type,client=self.client).update(default=False)
