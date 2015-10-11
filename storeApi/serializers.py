@@ -1,7 +1,8 @@
-from rest_framework import serializers
-from django.contrib.auth.models import User
+from rest_framework                import serializers
+from django.contrib.auth.models    import User
 from taggit_serializer.serializers import (TagListSerializerField, TaggitSerializer)
-from storeApi.models import *
+from storeApi.models               import *
+from taggit.models                 import Tag
 
 class ProductSerializer(TaggitSerializer,serializers.ModelSerializer):
     tags = TagListSerializerField(required=False)
@@ -51,3 +52,9 @@ class AdressSerializer(serializers.ModelSerializer):
     class Meta:
         model = Adress
         fields = ('client', 'name', 'type', 'default', 'firstname', 'lastname', 'adress_line1', 'adress_line2', 'city', 'state_province', 'country', 'zipcode', 'phone_number', 'date',)
+
+class TagSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Tag
+        fields = ('name',)
+

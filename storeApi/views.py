@@ -1,7 +1,9 @@
-from storeApi.models           import *
-from storeApi.serializers      import *
-from rest_framework            import permissions
-from rest_framework            import viewsets
+from storeApi.models               import *
+from storeApi.serializers          import *
+from rest_framework                import permissions
+from rest_framework                import viewsets
+from taggit.models                 import Tag
+from taggit_serializer.serializers import TaggitSerializer
 
 class ProductViewSet(viewsets.ModelViewSet):
         queryset           = Product.objects.all()
@@ -36,4 +38,9 @@ class OrderViewSet(viewsets.ModelViewSet):
 class AdressViewSet(viewsets.ModelViewSet):
         queryset           = Adress.objects.all()
         serializer_class   = AdressSerializer
+        permission_classes = (permissions.IsAuthenticatedOrReadOnly,)
+
+class TaggitViewSet(viewsets.ModelViewSet):
+        queryset           = Tag.objects.all()
+        serializer_class   = TagSerializer
         permission_classes = (permissions.IsAuthenticatedOrReadOnly,)
