@@ -16,6 +16,8 @@ class ProductViewSet(viewsets.ModelViewSet):
 class ProductImagesViewset(viewsets.ModelViewSet):
         queryset           = ProductImages.objects.all()
         serializer_class   = ProductImageSerializer
+        filter_backends = (filters.DjangoFilterBackend,)
+        filter_fields = ('product','product__name',)
         permission_classes = (permissions.IsAuthenticatedOrReadOnly,)
 
 class CategoryViewset(viewsets.ModelViewSet):
@@ -31,16 +33,22 @@ class UserViewset(viewsets.ModelViewSet):
 class ShoppingCartProductViewset(viewsets.ModelViewSet):
         queryset           = ShoppingCartProduct.objects.all()
         serializer_class   = ShoppingCartProductSerializer
+        filter_backends = (filters.DjangoFilterBackend,)
+        filter_fields = ('client',)
         permission_classes = (permissions.IsAuthenticatedOrReadOnly,)
 
 class OrderViewSet(viewsets.ModelViewSet):
         queryset           = Order.objects.all()
         serializer_class   = OrderSerializer
+        filter_backends = (filters.DjangoFilterBackend,)
+        filter_fields = ('client',)
         permission_classes = (permissions.IsAuthenticatedOrReadOnly,)
 
 class AdressViewSet(viewsets.ModelViewSet):
         queryset           = Adress.objects.all()
         serializer_class   = AdressSerializer
+        filter_backends = (filters.DjangoFilterBackend,)
+        filter_fields = ('client',)
         permission_classes = (permissions.IsAuthenticatedOrReadOnly,)
 
 class TaggitViewSet(viewsets.ModelViewSet):
