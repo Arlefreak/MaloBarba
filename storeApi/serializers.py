@@ -6,6 +6,7 @@ from taggit.models                 import Tag
 
 class ProductSerializer(TaggitSerializer,serializers.ModelSerializer):
     tags = TagListSerializerField(required=False)
+    category = serializers.StringRelatedField()
     class Meta:
         model = Product
         fields = ('pk','sku','name','image','description','price','discount','inventory','status','tags','category','date','updated','order',)
