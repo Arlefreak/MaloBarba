@@ -29,9 +29,12 @@ class ClientAdmin(admin.ModelAdmin):
 class OrderAdmin(admin.ModelAdmin):
         list_display = ('sku', 'client', 'shippingAdress', 'billingAdress', 'items_subTotal','shipping_cost','taxes_cost', 'total','shipping_carrier', 'shipping_tracking','date', 'updated', 'status')
 
+class ShoppingCartProductAdmin(admin.ModelAdmin):
+        list_display = ('client', 'product', 'cuantity')
+
 admin.site.register(Product, ProductAdmin)
 admin.site.register(Adress, AdressAdmin)
 admin.site.register(Client, ClientAdmin)
 admin.site.register(Order, OrderAdmin)
 admin.site.register(Category)
-admin.site.register(ShoppingCartProduct)
+admin.site.register(ShoppingCartProduct, ShoppingCartProductAdmin)

@@ -90,10 +90,9 @@ class ShoppingCartProduct(models.Model):
     def save(self, *args, **kwargs):
         product = ShoppingCartProduct.objects.filter(client = self.client, product = self.product)
         if(product):
-            for p in <`2product`>:
-            p.cuantity += self.cuantity
-            p.save()
-            return
+            for p in product:
+                self.cuantity += p.cuantity
+                p.delete()
         super(ShoppingCartProduct, self).save(**kwargs)
 
 class Order(models.Model):
