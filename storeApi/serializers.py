@@ -1,4 +1,5 @@
 from rest_framework import serializers
+from django.contrib.auth.models import User
 from taggit_serializer.serializers import (TagListSerializerField, TaggitSerializer)
 from storeApi.models import *
 
@@ -18,10 +19,23 @@ class ProductImageSerializer(serializers.ModelSerializer):
         model = ProductImages
         fields = ('product', 'name', 'image', 'order', 'date', 'updated',)
 
-class ClientSerializer(serializers.ModelSerializer):
+class UserSerializer(serializers.ModelSerializer):
     class Meta:
-        model = Client
-        fields = ('user',)
+        model = User
+        fields = ('username','first_name', 'last_name', 'email')
+    def create(self, validated_data):
+        client_data = validated_data.pop('client', None)
+        user = super(ClientSerializer, self).create(validated_data)
+        self.create_or_update_client(user, client_data)
+        return user
+    def update(self, instance, validated_data):
+        client_data = validated_data.pop('client', None)
+        self.create_or_update_client(instance, client_data)
+        return super(UserSerializer, self).update(instance, validated_data)
+    def create_or_update_profile(self, user, client_data):
+        client, created = Client.objects.get_or_create(user=user, defaults=client_data)
+        if not created and client_data is not None:
+            super(ClientSerializer, self).update(client, client_data)
 
 class ShoppingCartProductSerializer(serializers.ModelSerializer):
     class Meta:

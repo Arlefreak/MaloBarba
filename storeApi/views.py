@@ -18,9 +18,9 @@ class CategoryViewset(viewsets.ModelViewSet):
         serializer_class   = CategorySerializer 
         permission_classes = (permissions.IsAuthenticatedOrReadOnly,)
 
-class ClientViewset(viewsets.ModelViewSet):
-        queryset           = Client.objects.all()
-        serializer_class   = ClientSerializer
+class UserViewset(viewsets.ModelViewSet):
+        queryset           = User.objects.all()
+        serializer_class   = UserSerializer 
         permission_classes = (permissions.IsAuthenticatedOrReadOnly,)
 
 class ShoppingCartProductViewset(viewsets.ModelViewSet):
