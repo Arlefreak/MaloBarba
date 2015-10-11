@@ -87,6 +87,14 @@ class ShoppingCartProduct(models.Model):
         return u'%s' % (self.product.name)
     def __str__(self):
         return u'%s' % (self.product.name)
+    def save(self, *args, **kwargs):
+        product = ShoppingCartProduct.objects.filter(client = self.client, product = self.product)
+        if(product):
+            for p in <`2product`>:
+            p.cuantity += self.cuantity
+            p.save()
+            return
+        super(ShoppingCartProduct, self).save(**kwargs)
 
 class Order(models.Model):
     sku               = models.SlugField('SKU', unique=True, max_length=50, editable=False)
