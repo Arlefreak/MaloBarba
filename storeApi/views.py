@@ -2,12 +2,15 @@ from storeApi.models               import *
 from storeApi.serializers          import *
 from rest_framework                import permissions
 from rest_framework                import viewsets
+from rest_framework                import filters
 from taggit.models                 import Tag
 from taggit_serializer.serializers import TaggitSerializer
 
 class ProductViewSet(viewsets.ModelViewSet):
         queryset           = Product.objects.all()
         serializer_class   = ProductSerializer
+        filter_backends = (filters.DjangoFilterBackend,)
+        filter_fields = ('category','category__name', 'status')
         permission_classes = (permissions.IsAuthenticatedOrReadOnly,)
 
 class ProductImagesViewset(viewsets.ModelViewSet):
