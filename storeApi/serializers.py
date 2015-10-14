@@ -9,7 +9,7 @@ class ProductSerializer(TaggitSerializer,serializers.ModelSerializer):
     category = serializers.StringRelatedField()
     class Meta:
         model = Product
-        fields = ('pk','sku','name','image','description','price','discount','inventory','status','tags','category','date','updated','order',)
+        fields = ('pk','sku','name','image','description','price','discount','inventory','status','tags','category','date','updated','order','url')
 
 class CategorySerializer(serializers.ModelSerializer):
     class Meta:
