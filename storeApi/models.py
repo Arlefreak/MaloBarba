@@ -87,6 +87,13 @@ class ShoppingCartProduct(models.Model):
         return u'%s' % (self.product.name)
     def __str__(self):
         return u'%s' % (self.product.name)
+    def save(self, *args, **kwargs):
+        product = ShoppingCartProduct.objects.filter(client = self.client, product = self.product)
+        if(product):
+            for p in product:
+                self.cuantity += p.cuantity
+                p.delete()
+        super(ShoppingCartProduct, self).save(**kwargs)
 
 class Order(models.Model):
     sku               = models.SlugField('SKU', unique=True, max_length=50, editable=False)
@@ -146,13 +153,13 @@ class Adress(models.Model):
     phone_number   = models.CharField(_('Phone number'), max_length=40)
     date           = models.DateField('Date added', auto_now_add=True)
     class Meta:
-        ordering = ['default', 'date', 'name']
+        ordering = ['client','default', 'date', 'name']
         verbose_name = 'adress'
         verbose_name_plural = 'adresses'
     def __unicode__(self):
-        return u'%s' % (self.name)
+        return u'%s - %s' % (self.client,self.name)
     def __str__(self):
-        return u'%s' % (self.name)
+        return u'%s - %s' % (self.client,self.name)
     def save(self, *args, **kwargs):
         if self.default:
             Adress.objects.filter(default=True,type=self.type,client=self.client).update(default=False)
