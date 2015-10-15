@@ -21,6 +21,7 @@ class Product (models.Model):
     date          = models.DateField('Date added', auto_now_add=True)
     updated       = models.DateField('Date updated', auto_now=True)
     order         = models.IntegerField('Order', default=0)
+    url           = models.URLField('URL', blank=True, null=True)
     class Meta:
         ordering  = ['order', 'date', 'sku']
         verbose_name = 'product'
